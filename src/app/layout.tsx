@@ -1,10 +1,6 @@
 import "./globals.css";
 import Providers from "./providers";
-
-export const metadata = {
-  title: "tldraw-editor",
-  description: "Editor simple con Next.js, tRPC y tldraw",
-};
+import { ToastProvider, Toaster } from "@/components/ui/toast";
 
 export default function RootLayout({
   children,
@@ -14,7 +10,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
-        <Providers>{children}</Providers>
+        <ToastProvider>
+          <Providers>{children}</Providers>
+          <Toaster />
+        </ToastProvider>
       </body>
     </html>
   );

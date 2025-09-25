@@ -2,8 +2,9 @@
 
 import { Tldraw } from "tldraw";
 import "tldraw/tldraw.css";
-import { Button } from "@/components/ui/button";
+
 import { useEditorPersistence } from "@/features/editor/hooks/useEditorPersistence";
+import { Button } from "@/components/ui/button";
 
 /**
  * EditorPage renderiza el canvas de Tldraw y delega toda la lógica
