@@ -22,4 +22,12 @@ export const toastVariants = cva(
   }
 );
 
+export const toasterWrapper = cva(
+  "fixed top-4 right-4 z-[99999] flex w-full max-w-sm flex-col gap-2 pointer-events-none"
+);
+
+export const toasterButton = cva(
+  "pointer-events-auto text-left transition-opacity hover:opacity-90"
+);
+
 export type ToastVariantProps = VariantProps<typeof toastVariants>;

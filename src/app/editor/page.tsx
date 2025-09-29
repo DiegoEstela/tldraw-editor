@@ -1,38 +1,57 @@
 "use client";
-
+/**
+ * EditorPage
+ * Renderiza el canvas de Tldraw y delega carga/persistencia al hook `useEditorPersistence`.
+ * Incluye botón para crear/modificar una figura y badge de estado de guardado.
+ */
 import { Tldraw } from "tldraw";
 import "tldraw/tldraw.css";
 
 import { useEditorPersistence } from "@/features/editor/hooks/useEditorPersistence";
-import { Button } from "@/components/ui/button";
+import {
+  editorWrapper,
+  canvasLayer,
+  loadingOverlay,
+  loadingBox,
+  actionFloater,
+  statusPill,
+  floaterButton,
+} from "./page.variants";
 
-/**
- * EditorPage renderiza el canvas de Tldraw y delega toda la lógica
- * de carga y persistencia al hook `useEditorPersistence`. Muestra
- * estados de carga/guardado y un botón de acción básico.
- */
 export default function EditorPage() {
-  const { isLoading, isSaving, handleEditorMount, handleModifyShape } =
-    useEditorPersistence();
+  const {
+    isLoading,
+    isSaving,
+    handleEditorMount,
+    handleModifyShape,
+    hasShape,
+  } = useEditorPersistence();
 
   return (
-    <main className="p-6 space-y-4">
-      <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Editor</h1>
-        <Button onClick={handleModifyShape} disabled={isSaving || isLoading}>
-          {isSaving ? "Guardando..." : "Modificar shape"}
-        </Button>
-      </header>
+    <main className={editorWrapper()}>
+      <div className={canvasLayer()}>
+        <Tldraw onMount={handleEditorMount} />
+      </div>
 
-      <section className="h-[70vh] rounded-xl border overflow-hidden">
-        {isLoading ? (
-          <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
-            Cargando documento...
-          </div>
-        ) : (
-          <Tldraw onMount={handleEditorMount} />
-        )}
-      </section>
+      {isLoading && (
+        <div className={loadingOverlay()}>
+          <div className={loadingBox()}>Cargando documento…</div>
+        </div>
+      )}
+
+      <div className={actionFloater()}>
+        <button
+          onClick={handleModifyShape}
+          className={floaterButton()}
+          disabled={isSaving || isLoading}
+        >
+          {hasShape ? "Modificar forma" : "Crear forma"}
+        </button>
+
+        <div className={statusPill({ state: isSaving ? "saving" : "saved" })}>
+          {isSaving ? "Guardando…" : "Cambios guardados"}
+        </div>
+      </div>
     </main>
   );
 }

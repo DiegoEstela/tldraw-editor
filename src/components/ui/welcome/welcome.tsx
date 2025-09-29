@@ -10,8 +10,14 @@ import {
   titleVariants,
   kbdVariants,
   chipsVariants,
+  chipItemVariants,
   actionsVariants,
   footerVariants,
+  footerInnerVariants,
+  themeToggleWrapperVariants,
+  themeToggleLabelVariants,
+  subtitleVariants,
+  headerVariants,
   type WelcomeVariantProps,
 } from "./welcome.variants";
 import { useCallback, useEffect, useState } from "react";
@@ -57,8 +63,8 @@ export default function Welcome({
 
   return (
     <main className={cn(wrapperVariants({ glow, bg }))}>
-      <div className="absolute right-4 top-4 z-50 flex items-center gap-2">
-        <span className="hidden select-none text-xs text-muted-foreground sm:block">
+      <div className={themeToggleWrapperVariants()}>
+        <span className={themeToggleLabelVariants()}>
           {isDark ? "Dark" : "Light"}
         </span>
         <Switch
@@ -68,18 +74,16 @@ export default function Welcome({
         />
       </div>
 
-      <section className={cn("flex-1", containerVariants({ align, size }))}>
-        <header className="space-y-4">
-          <p className={cn(kbdVariants({ tone }))}>
+      <section className={containerVariants({ align, size })}>
+        <header className={headerVariants()}>
+          <p className={kbdVariants({ tone })}>
             Technical Test — tldraw + Next.js
           </p>
-          <h1 className={cn(titleVariants({ size }))}>Drawing Editor</h1>
-          <p className="mx-auto max-w-prose text-base text-muted-foreground">
-            {subtitle}
-          </p>
+          <h1 className={titleVariants({ size })}>Drawing Editor</h1>
+          <p className={subtitleVariants()}>{subtitle}</p>
         </header>
 
-        <ul className={cn(chipsVariants({ align }))}>
+        <ul className={chipsVariants({ align })}>
           {[
             "Next.js",
             "TypeScript",
@@ -88,21 +92,21 @@ export default function Welcome({
             "TailwindCSS",
             "shadcn/ui",
           ].map((tag) => (
-            <li key={tag} className="rounded-full border px-3 py-1">
+            <li key={tag} className={chipItemVariants()}>
               {tag}
             </li>
           ))}
         </ul>
 
-        <div className={cn(actionsVariants({ align }))}>
+        <div className={actionsVariants({ align })}>
           <Button asChild>
             <Link href="/editor">Ir al editor →</Link>
           </Button>
         </div>
       </section>
 
-      <footer className={cn(footerVariants())}>
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3 text-xs text-muted-foreground">
+      <footer className={footerVariants()}>
+        <div className={footerInnerVariants()}>
           <span>{appName}</span>
           <span>Creado por {author} · 2025</span>
         </div>

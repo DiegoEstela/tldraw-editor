@@ -11,18 +11,27 @@ export const wrapperVariants = cva(
       bg: {
         none: "",
         subtle: "bg-gradient-to-b from-background via-background to-background",
-        halo:
-          "bg-gradient-to-b from-background via-background to-background " +
-          "before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:-z-10 before:h-[30rem] " +
+        halo: [
+          "bg-gradient-to-b from-background via-background to-background",
+          "before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:-z-10 before:h-[30rem]",
           "before:bg-[radial-gradient(45rem_20rem_at_50%_-10%,hsl(var(--foreground)/0.08),transparent_60%)]",
+        ].join(" "),
       },
     },
     defaultVariants: { glow: "on", bg: "halo" },
   }
 );
 
+export const themeToggleWrapperVariants = cva(
+  "absolute right-4 top-4 z-50 flex items-center gap-2"
+);
+
+export const themeToggleLabelVariants = cva(
+  "hidden select-none text-xs text-muted-foreground sm:block"
+);
+
 export const containerVariants = cva(
-  "mx-auto flex w-full max-w-5xl flex-col gap-8 px-6 py-20 md:py-28",
+  "mx-auto flex w-full max-w-5xl flex-col gap-8 px-6 py-20 md:py-28 flex-1",
   {
     variants: {
       align: {
@@ -35,12 +44,18 @@ export const containerVariants = cva(
   }
 );
 
+export const headerVariants = cva("space-y-4");
+
 export const titleVariants = cva("tracking-tight", {
   variants: {
     size: { md: "text-3xl md:text-5xl", lg: "text-4xl md:text-6xl" },
   },
   defaultVariants: { size: "md" },
 });
+
+export const subtitleVariants = cva(
+  "mx-auto max-w-prose text-base text-muted-foreground"
+);
 
 export const kbdVariants = cva(
   "rounded-md border bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground shadow-sm",
@@ -63,14 +78,19 @@ export const chipsVariants = cva(
   }
 );
 
+export const chipItemVariants = cva("rounded-full border px-3 py-1");
+
 export const actionsVariants = cva("flex items-center gap-3", {
   variants: { align: { center: "justify-center", left: "" } },
   defaultVariants: { align: "center" },
 });
 
 export const footerVariants = cva(
-  "mt-auto w-full border-t bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/60",
-  { variants: {}, defaultVariants: {} }
+  "mt-auto w-full border-t bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+);
+
+export const footerInnerVariants = cva(
+  "mx-auto flex max-w-5xl items-center justify-between px-6 py-3 text-xs text-muted-foreground"
 );
 
 export type WelcomeVariantProps = VariantProps<typeof wrapperVariants> &
