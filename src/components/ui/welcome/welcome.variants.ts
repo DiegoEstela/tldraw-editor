@@ -85,6 +85,17 @@ export const actionsVariants = cva("flex items-center gap-3", {
   defaultVariants: { align: "center" },
 });
 
+export const ctaButtonVariants = cva(
+  [
+    "inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3",
+    "font-semibold tracking-tight text-base md:text-lg",
+    "shadow-lg ring-1 ring-black/5 transition-all active:scale-[0.99]",
+    "bg-gradient-to-r from-primary to-primary/80 text-primary-foreground",
+    "hover:from-primary/90 hover:to-primary/70",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60",
+  ].join(" ")
+);
+
 export const footerVariants = cva(
   "mt-auto w-full border-t bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/60"
 );

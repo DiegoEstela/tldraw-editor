@@ -9,15 +9,12 @@ import {
   type Editor,
   type TLEditorSnapshot,
   type TLGeoShape,
+  createShapeId,
   getSnapshot,
   loadSnapshot,
 } from "tldraw";
 import { trpc } from "@/app/providers";
-import {
-  DEMO_SHAPE_ID,
-  SAVE_DEBOUNCE_MS,
-  SHAPE_CONFIGS,
-} from "@/lib/constants";
+import { SAVE_DEBOUNCE_MS, SHAPE_CONFIGS } from "@/lib/constants";
 import { useToast } from "@/components/ui/toast";
 
 function isGeoShape(shape: unknown): shape is TLGeoShape {
@@ -39,6 +36,8 @@ export function useEditorPersistence() {
   const [hasShape, setHasShape] = useState(false);
 
   const { toast } = useToast();
+
+  const DEMO_SHAPE_ID = createShapeId("demo-shape");
 
   const persistSnapshot = useCallback(async (): Promise<void> => {
     const editor = editorRef.current;
@@ -65,20 +64,23 @@ export function useEditorPersistence() {
     }, SAVE_DEBOUNCE_MS);
   }, [persistSnapshot]);
 
-  const updateShapeState = useCallback((editor: Editor): void => {
-    const existing = editor.getShape(DEMO_SHAPE_ID);
-    if (isGeoShape(existing)) {
-      setHasShape(true);
+  const updateShapeState = useCallback(
+    (editor: Editor): void => {
+      const existing = editor.getShape(DEMO_SHAPE_ID);
+      if (isGeoShape(existing)) {
+        setHasShape(true);
 
-      const foundIndex = SHAPE_CONFIGS.findIndex(
-        (cfg) => cfg.geo === existing.props.geo
-      );
-      if (foundIndex >= 0) setShapeIndex(foundIndex);
-    } else {
-      setHasShape(false);
-      setShapeIndex(0);
-    }
-  }, []);
+        const foundIndex = SHAPE_CONFIGS.findIndex(
+          (cfg) => cfg.geo === existing.props.geo
+        );
+        if (foundIndex >= 0) setShapeIndex(foundIndex);
+      } else {
+        setHasShape(false);
+        setShapeIndex(0);
+      }
+    },
+    [DEMO_SHAPE_ID]
+  );
 
   const loadInitialSnapshot = useCallback(
     async (editor: Editor): Promise<void> => {
@@ -173,7 +175,7 @@ export function useEditorPersistence() {
       title: "Forma modificada",
       description: `La forma cambió a ${label}.`,
     });
-  }, [shapeIndex, toast]);
+  }, [shapeIndex, toast, DEMO_SHAPE_ID]);
 
   return {
     isLoading,

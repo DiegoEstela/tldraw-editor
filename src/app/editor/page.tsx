@@ -4,7 +4,7 @@
  * Renderiza el canvas de Tldraw y delega carga/persistencia al hook `useEditorPersistence`.
  * Incluye botón para crear/modificar una figura y badge de estado de guardado.
  */
-import { Tldraw } from "tldraw";
+import { Editor, Tldraw } from "tldraw";
 import "tldraw/tldraw.css";
 
 import { useEditorPersistence } from "@/features/editor/hooks/useEditorPersistence";
@@ -16,7 +16,13 @@ import {
   actionFloater,
   statusPill,
   floaterButton,
+  backButtonWrapper,
 } from "./page.variants";
+import { AiShapeModal } from "@/components/ui/aiShapeModal";
+import { useState } from "react";
+import { aiWrapper } from "@/components/ui/aiShapeModal/aiShapeModal.variants";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function EditorPage() {
   const {
@@ -26,11 +32,16 @@ export default function EditorPage() {
     handleModifyShape,
     hasShape,
   } = useEditorPersistence();
-
+  const [editor, setEditor] = useState<Editor | null>(null);
   return (
     <main className={editorWrapper()}>
       <div className={canvasLayer()}>
-        <Tldraw onMount={handleEditorMount} />
+        <Tldraw
+          onMount={(e) => {
+            handleEditorMount(e);
+            setEditor(e);
+          }}
+        />
       </div>
 
       {isLoading && (
@@ -38,6 +49,15 @@ export default function EditorPage() {
           <div className={loadingBox()}>Cargando documento…</div>
         </div>
       )}
+
+      <div className={backButtonWrapper()}>
+        <Button asChild variant="outline" size="sm">
+          <Link href="/">← Volver al inicio</Link>
+        </Button>
+      </div>
+      <div className={aiWrapper()}>
+        <AiShapeModal editor={editor} />
+      </div>
 
       <div className={actionFloater()}>
         <button

@@ -30,3 +30,7 @@ export const statusPill = cva(baseFloater, {
     defaultVariants: { state: "saved" },
   },
 });
+
+export const backButtonWrapper = cva(
+  "absolute z-50 left-2 top-[calc(env(safe-area-inset-top,0px)+60px)]"
+);

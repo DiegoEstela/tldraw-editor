@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import {
   wrapperVariants,
   containerVariants,
+  headerVariants,
   titleVariants,
+  subtitleVariants,
   kbdVariants,
   chipsVariants,
   chipItemVariants,
@@ -16,9 +17,8 @@ import {
   footerInnerVariants,
   themeToggleWrapperVariants,
   themeToggleLabelVariants,
-  subtitleVariants,
-  headerVariants,
   type WelcomeVariantProps,
+  ctaButtonVariants,
 } from "./welcome.variants";
 import { useCallback, useEffect, useState } from "react";
 
@@ -31,11 +31,11 @@ type Props = {
 export default function Welcome({
   appName,
   author,
-  subtitle = "",
+  subtitle = "Dibuja, edita y continúa donde lo dejaste",
   glow = "on",
   align = "center",
   size = "md",
-  tone = "default",
+  tone = "brand",
   bg = "halo",
 }: Props) {
   const [isDark, setIsDark] = useState(false);
@@ -99,9 +99,13 @@ export default function Welcome({
         </ul>
 
         <div className={actionsVariants({ align })}>
-          <Button asChild>
-            <Link href="/editor">Ir al editor →</Link>
-          </Button>
+          <Link
+            href="/editor"
+            aria-label="Abrir el editor y comenzar el challenge"
+            className={ctaButtonVariants()}
+          >
+            Comenzar el challenge
+          </Link>
         </div>
       </section>
 

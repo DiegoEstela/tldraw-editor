@@ -9,3 +9,6 @@ import type { Context } from "./context";
 export const trpcServer = initTRPC.context<Context>().create({
   transformer: superjson,
 });
+
+export const router = trpcServer.router;
+export const publicProcedure = trpcServer.procedure;
