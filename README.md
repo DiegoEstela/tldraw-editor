@@ -4,6 +4,10 @@ Sistema de dibujo que integra **tldraw** sobre **Next.js (App Router)** con **pe
 
 ---
 
+https://github.com/user-attachments/assets/7c29d601-2a37-4de6-9061-23d840932cc7
+
+
+
 ## 1) Descripción general
 
 El objetivo es demostrar un editor funcional con:
@@ -136,7 +140,62 @@ src/
 
 ---
 
-## 7) Futuro: IA (plan de implementación)
+## 7) Como testear los ENDPOINTS
+
+### Requisitos:
+- App corriendo en **http://localhost:3000**
+- Terminal con **curl** y **jq** instalados
+
+### 7.1 Abrir el Editor y generar un cambio
+a. Ir a **http://localhost:3000/editor**
+b. Hacer clic en **“Crear forma”** (o **“Modificar forma”**) para asegurar que el documento tenga contenido.
+
+> El editor guarda automáticamente, por lo que el backend tendrá un snapshot para recuperar.
+
+### 7.2 Leer el snapshot actual (GET)
+Obtener el snapshot que está guardado en el servidor y guardarlo en un archivo:
+
+```bash
+curl -s "http://localhost:3000/api/trpc/document.get?input=null" -o snapshot.json
+```
+
+Verificar la respuesta con jq:
+
+```bash
+jq . snapshot.json
+```
+
+### 7.3 Guardar el snapshot (POST)
+Enviar el mismo snapshot nuevamente al servidor (simula un guardado):
+
+```bash
+curl -s -X POST "http://localhost:3000/api/trpc/document.save" \
+  -H "content-type: application/json" \
+  --data-raw "{\"input\": $(cat snapshot.json)}" | jq
+```
+
+La respuesta esperada es **200 OK** con un envelope tRPC:
+```json
+{
+  "result": {
+    "data": {
+      "json": { "ok": true, "updatedAt": 1738282828 }
+    }
+  }
+}
+```
+
+
+## Notas
+- Base de endpoints: `http://localhost:3000/api/trpc`
+- `document.get` usa **GET** y no requiere input → enviar `?input=null`.
+- `document.save` usa **POST** y espera un body con: `{"input": <TLEditorSnapshot>}`.
+- El servidor serializa snapshots con **SuperJSON**.
+
+
+---
+
+## 8) Futuro: IA (plan de implementación)
 
 > **La app actual NO utiliza IA.**  
 > La idea es sumar un panel de texto para “pedir” figuras por prompt (p. ej., “círculo rojo 200”). Se propone:
